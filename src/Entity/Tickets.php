@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\TicketsRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity(repositoryClass=TicketsRepository::class)
