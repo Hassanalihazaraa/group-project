@@ -49,9 +49,15 @@ class Users
      */
     private $tickets;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CommentHistory::class, mappedBy="created_by")
+     */
+    private $commentHistories;
+
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
+        $this->commentHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -144,6 +150,37 @@ class Users
             // set the owning side to null (unless already changed)
             if ($ticket->getHandlingAgent() === $this) {
                 $ticket->setHandlingAgent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CommentHistory[]
+     */
+    public function getCommentHistories(): Collection
+    {
+        return $this->commentHistories;
+    }
+
+    public function addCommentHistory(CommentHistory $commentHistory): self
+    {
+        if (!$this->commentHistories->contains($commentHistory)) {
+            $this->commentHistories[] = $commentHistory;
+            $commentHistory->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentHistory(CommentHistory $commentHistory): self
+    {
+        if ($this->commentHistories->contains($commentHistory)) {
+            $this->commentHistories->removeElement($commentHistory);
+            // set the owning side to null (unless already changed)
+            if ($commentHistory->getCreatedBy() === $this) {
+                $commentHistory->setCreatedBy(null);
             }
         }
 

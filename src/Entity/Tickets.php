@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TicketsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,12 +27,7 @@ class Tickets
     /**
      * @ORM\Column(type="string", length=1000)
      */
-    private $message_customer;
-
-    /**
-     * @ORM\Column(type="string", length=1000, nullable=true)
-     */
-    private $message_public_agent;
+    private $message;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -48,9 +45,39 @@ class Tickets
     private $handling_agent;
 
     /**
-     * @ORM\Column(type="string", length=1000, nullable=true)
+     * @ORM\OneToMany(targetEntity=CommentHistory::class, mappedBy="ticket_id", orphanRemoval=true)
      */
-    private $message_private_agent;
+    private $commentHistories;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_escalated;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $times_reopened;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $priorities;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated_message_time;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $title;
+
+    public function __construct()
+    {
+        $this->commentHistories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,26 +96,14 @@ class Tickets
         return $this;
     }
 
-    public function getMessageCustomer(): ?string
+    public function getMessage(): ?string
     {
-        return $this->message_customer;
+        return $this->message;
     }
 
-    public function setMessageCustomer(string $message_customer): self
+    public function setMessage(string $message): self
     {
-        $this->message_customer = $message_customer;
-
-        return $this;
-    }
-
-    public function getMessagePublicAgent(): ?string
-    {
-        return $this->message_public_agent;
-    }
-
-    public function setMessagePublicAgent(?string $message_public_agent): self
-    {
-        $this->message_public_agent = $message_public_agent;
+        $this->message = $message;
 
         return $this;
     }
@@ -129,14 +144,93 @@ class Tickets
         return $this;
     }
 
-    public function getMessagePrivateAgent(): ?string
+    /**
+     * @return Collection|CommentHistory[]
+     */
+    public function getCommentHistories(): Collection
     {
-        return $this->message_private_agent;
+        return $this->commentHistories;
     }
 
-    public function setMessagePrivateAgent(?string $message_private_agent): self
+    public function addCommentHistory(CommentHistory $commentHistory): self
     {
-        $this->message_private_agent = $message_private_agent;
+        if (!$this->commentHistories->contains($commentHistory)) {
+            $this->commentHistories[] = $commentHistory;
+            $commentHistory->setTicketId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentHistory(CommentHistory $commentHistory): self
+    {
+        if ($this->commentHistories->contains($commentHistory)) {
+            $this->commentHistories->removeElement($commentHistory);
+            // set the owning side to null (unless already changed)
+            if ($commentHistory->getTicketId() === $this) {
+                $commentHistory->setTicketId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIsEscalated(): ?bool
+    {
+        return $this->is_escalated;
+    }
+
+    public function setIsEscalated(bool $is_escalated): self
+    {
+        $this->is_escalated = $is_escalated;
+
+        return $this;
+    }
+
+    public function getTimesReopened(): ?int
+    {
+        return $this->times_reopened;
+    }
+
+    public function setTimesReopened(int $times_reopened): self
+    {
+        $this->times_reopened = $times_reopened;
+
+        return $this;
+    }
+
+    public function getPriorities(): ?int
+    {
+        return $this->priorities;
+    }
+
+    public function setPriorities(int $priorities): self
+    {
+        $this->priorities = $priorities;
+
+        return $this;
+    }
+
+    public function getUpdatedMessageTime(): ?\DateTimeInterface
+    {
+        return $this->updated_message_time;
+    }
+
+    public function setUpdatedMessageTime(?\DateTimeInterface $updated_message_time): self
+    {
+        $this->updated_message_time = $updated_message_time;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }
