@@ -21,7 +21,7 @@ class CommentHistory
      * @ORM\ManyToOne(targetEntity=Tickets::class, inversedBy="commentHistories")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $ticket_id;
+    private $ticket;
 
     /**
      * @ORM\Column(type="string", length=1000)
@@ -48,14 +48,14 @@ class CommentHistory
         return $this->id;
     }
 
-    public function getTicketId(): ?Tickets
+    public function getTicket(): ?Tickets
     {
-        return $this->ticket_id;
+        return $this->ticket;
     }
 
-    public function setTicketId(?Tickets $ticket_id): self
+    public function setTicket(?Tickets $ticket): self
     {
-        $this->ticket_id = $ticket_id;
+        $this->ticket = $ticket;
 
         return $this;
     }
