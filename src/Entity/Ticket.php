@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Ticket
 {
+    const MEDIUM_PRIORITY = 5;
+    const MIN_PRIORITY = 0;
+    const MAX_PRIORITY = 10;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -84,16 +87,16 @@ class Ticket
         return $this->id;
     }
 
-    public function getCreatedBy(): ?int
+    public function getCreatedBy(): ?User
     {
         return $this->created_by;
     }
 
-    public function setCreatedBy(int $created_by): self
+    public function setCreatedBy(User $user): void
     {
-        $this->created_by = $created_by;
+        $this->created_by = $user;
 
-        return $this;
+        //return $this;
     }
 
     public function getMessage(): ?string
@@ -101,11 +104,11 @@ class Ticket
         return $this->message;
     }
 
-    public function setMessage(string $message): self
+    public function setMessage(string $message): void
     {
         $this->message = $message;
 
-        return $this;
+        //return $this;
     }
 
     public function getStatus(): ?string
@@ -113,11 +116,11 @@ class Ticket
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(string $status): void
     {
         $this->status = $status;
 
-        return $this;
+        //return $this;
     }
 
     public function getCreationTime(): ?\DateTimeInterface
@@ -125,11 +128,11 @@ class Ticket
         return $this->creation_time;
     }
 
-    public function setCreationTime(\DateTimeInterface $creation_time): self
+    public function setCreationTime(\DateTimeInterface $creation_time): void
     {
         $this->creation_time = $creation_time;
 
-        return $this;
+        //return $this;
     }
 
     public function getHandlingAgent(): ?User
@@ -137,11 +140,11 @@ class Ticket
         return $this->handling_agent;
     }
 
-    public function setHandlingAgent(?User $handling_agent): self
+    public function setHandlingAgent(?User $handling_agent): void
     {
         $this->handling_agent = $handling_agent;
 
-        return $this;
+        //return $this;
     }
 
     /**
@@ -180,11 +183,11 @@ class Ticket
         return $this->is_escalated;
     }
 
-    public function setIsEscalated(bool $is_escalated): self
+    public function setIsEscalated(bool $is_escalated): void
     {
         $this->is_escalated = $is_escalated;
 
-        return $this;
+        //return $this;
     }
 
     public function getTimesReopened(): ?int
@@ -192,11 +195,11 @@ class Ticket
         return $this->times_reopened;
     }
 
-    public function setTimesReopened(int $times_reopened): self
+    public function setTimesReopened(int $times_reopened): void
     {
         $this->times_reopened = $times_reopened;
 
-        return $this;
+        //return $this;
     }
 
     public function getPriorities(): ?int
@@ -204,11 +207,11 @@ class Ticket
         return $this->priorities;
     }
 
-    public function setPriorities(int $priorities): self
+    public function setPriorities(int $priorities): void
     {
         $this->priorities = $priorities;
 
-        return $this;
+        //return $this;
     }
 
     public function getUpdatedMessageTime(): ?\DateTimeInterface
@@ -216,11 +219,11 @@ class Ticket
         return $this->updated_message_time;
     }
 
-    public function setUpdatedMessageTime(?\DateTimeInterface $updated_message_time): self
+    public function setUpdatedMessageTime(?\DateTimeInterface $updated_message_time): void
     {
         $this->updated_message_time = $updated_message_time;
 
-        return $this;
+        //return $this;
     }
 
     public function getTitle(): ?string
@@ -228,10 +231,19 @@ class Ticket
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(string $title): void
     {
         $this->title = $title;
 
-        return $this;
+        //return $this;
+    }
+
+    public function setDefaults(): void
+    {
+        $this->status = 'open';
+        $this->is_escalated = false;
+        $this->times_reopened = 0;
+        $this->priorities = self::MEDIUM_PRIORITY;
+        $this->creation_time = new \DateTimeImmutable();
     }
 }
