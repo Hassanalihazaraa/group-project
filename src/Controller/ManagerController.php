@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\AddAgentType;
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ManagerController extends AbstractController
@@ -24,7 +24,8 @@ class ManagerController extends AbstractController
     /**
      * @Route("/manager/add-agent", name="add-agent")
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
+     * @throws \Exception
      */
     public function addAgent(Request $request)
     {
@@ -51,9 +52,6 @@ class ManagerController extends AbstractController
             $manager->persist($agent);
             $manager->flush();
         }
-
-
-
 
         $user = new User();
         $form = $this->createForm(AddAgentType::class, $user);
