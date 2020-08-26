@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\TicketsRepository;
+use App\Repository\TicketRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=TicketsRepository::class)
+ * @ORM\Entity(repositoryClass=TicketRepository::class)
  */
-class Tickets
+class Ticket
 {
     /**
      * @ORM\Id()
@@ -20,7 +20,7 @@ class Tickets
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="tickets")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ticket")
      */
     private $created_by;
 
@@ -40,7 +40,7 @@ class Tickets
     private $creation_time;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="tickets")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ticket")
      */
     private $handling_agent;
 
@@ -132,12 +132,12 @@ class Tickets
         return $this;
     }
 
-    public function getHandlingAgent(): ?Users
+    public function getHandlingAgent(): ?User
     {
         return $this->handling_agent;
     }
 
-    public function setHandlingAgent(?Users $handling_agent): self
+    public function setHandlingAgent(?User $handling_agent): self
     {
         $this->handling_agent = $handling_agent;
 

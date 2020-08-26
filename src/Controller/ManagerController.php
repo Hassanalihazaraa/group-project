@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Users;
+use App\Entity\User;
 use App\Form\AddAgentType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -39,7 +39,7 @@ class ManagerController extends AbstractController
 
             $message = "Created agent {$firstName} {$lastName} with email {$email} and random generated password {$random}";
 
-            $agent = new Users();
+            $agent = new User();
             $agent
                 ->setFirstName($firstName)
                 ->setLastName($lastName)
@@ -55,7 +55,7 @@ class ManagerController extends AbstractController
 
 
 
-        $user = new Users();
+        $user = new User();
         $form = $this->createForm(AddAgentType::class, $user);
         return $this->render('manager/add_agent.html.twig', [
             'add_agent_form' => $form->createView(),

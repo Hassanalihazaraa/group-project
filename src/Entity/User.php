@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\UsersRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 /**
- * @ORM\Entity(repositoryClass=UsersRepository::class)
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class Users implements UserInterface
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -45,9 +45,9 @@ class Users implements UserInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity=Tickets::class, mappedBy="handling_agent")
+     * @ORM\OneToMany(targetEntity=Ticket::class, mappedBy="handling_agent")
      */
-    private $tickets;
+    private $ticket;
 
     /**
      * @ORM\OneToMany(targetEntity=CommentHistory::class, mappedBy="created_by")
@@ -56,7 +56,7 @@ class Users implements UserInterface
 
     public function __construct()
     {
-        $this->tickets = new ArrayCollection();
+        $this->ticket = new ArrayCollection();
         $this->commentHistories = new ArrayCollection();
     }
 
@@ -126,27 +126,27 @@ class Users implements UserInterface
     }
 
     /**
-     * @return Collection|Tickets[]
+     * @return Collection|Ticket[]
      */
     public function getTickets(): Collection
     {
-        return $this->tickets;
+        return $this->ticket;
     }
 
-    public function addTicket(Tickets $ticket): self
+    public function addTicket(Ticket $ticket): self
     {
-        if (!$this->tickets->contains($ticket)) {
-            $this->tickets[] = $ticket;
+        if (!$this->ticket->contains($ticket)) {
+            $this->ticket[] = $ticket;
             $ticket->setHandlingAgent($this);
         }
 
         return $this;
     }
 
-    public function removeTicket(Tickets $ticket): self
+    public function removeTicket(Ticket $ticket): self
     {
-        if ($this->tickets->contains($ticket)) {
-            $this->tickets->removeElement($ticket);
+        if ($this->ticket->contains($ticket)) {
+            $this->ticket->removeElement($ticket);
             // set the owning side to null (unless already changed)
             if ($ticket->getHandlingAgent() === $this) {
                 $ticket->setHandlingAgent(null);
