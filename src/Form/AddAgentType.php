@@ -5,7 +5,7 @@ namespace App\Form;
 //use Doctrine\DBAL\Types\TextType;
 
 
-use App\Entity\Users;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -28,7 +28,7 @@ class AddAgentType extends AbstractType
     {
         $resolver->setDefaults([
             // Configure your form options here
-            'data-class' => Users::class
+            'data-class' => User::class
         ]);
     }
 }

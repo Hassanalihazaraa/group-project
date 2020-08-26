@@ -18,7 +18,7 @@ class CommentHistory
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Tickets::class, inversedBy="commentHistories")
+     * @ORM\ManyToOne(targetEntity=Ticket::class, inversedBy="commentHistories")
      * @ORM\JoinColumn(nullable=false)
      */
     private $ticket;
@@ -39,7 +39,7 @@ class CommentHistory
     private $fromManager;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="commentHistories")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="commentHistories")
      */
     private $created_by;
 
@@ -48,12 +48,12 @@ class CommentHistory
         return $this->id;
     }
 
-    public function getTicket(): ?Tickets
+    public function getTicket(): ?Ticket
     {
         return $this->ticket;
     }
 
-    public function setTicket(?Tickets $ticket): self
+    public function setTicket(?Ticket $ticket): self
     {
         $this->ticket = $ticket;
 
@@ -96,12 +96,12 @@ class CommentHistory
         return $this;
     }
 
-    public function getCreatedBy(): ?Users
+    public function getCreatedBy(): ?User
     {
         return $this->created_by;
     }
 
-    public function setCreatedBy(?Users $created_by): self
+    public function setCreatedBy(?User $created_by): self
     {
         $this->created_by = $created_by;
 
