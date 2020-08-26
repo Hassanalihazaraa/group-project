@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Ticket;
 use App\Entity\User;
+use App\Form\NewTicketType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/user")
+ * @Route("/admin")
  */
 class UserController extends AbstractController
 {
