@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\AddAgentType;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,7 @@ class ManagerController extends AbstractController
     /**
      * @Route("/manager", name="manager")
      */
-    public function index()
+    public function index(): Response
     {
         return $this->render('manager/index.html.twig', [
             'controller_name' => 'ManagerController',
@@ -25,9 +26,9 @@ class ManagerController extends AbstractController
      * @Route("/manager/add-agent", name="add-agent")
      * @param Request $request
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
-    public function addAgent(Request $request)
+    public function addAgent(Request $request): Response
     {
         $message = "Create a user here";
 

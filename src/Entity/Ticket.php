@@ -159,7 +159,7 @@ class Ticket
     {
         if (!$this->commentHistories->contains($commentHistory)) {
             $this->commentHistories[] = $commentHistory;
-            $commentHistory->setTicketId($this);
+            $commentHistory->setTicket($this);
         }
 
         return $this;
@@ -170,8 +170,8 @@ class Ticket
         if ($this->commentHistories->contains($commentHistory)) {
             $this->commentHistories->removeElement($commentHistory);
             // set the owning side to null (unless already changed)
-            if ($commentHistory->getTicketId() === $this) {
-                $commentHistory->setTicketId(null);
+            if ($commentHistory->getTicket() === $this) {
+                $commentHistory->setTicket(null);
             }
         }
 
