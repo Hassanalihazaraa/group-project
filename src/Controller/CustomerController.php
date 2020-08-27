@@ -7,7 +7,6 @@ use App\Entity\User;
 use App\Form\NewTicketType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CustomerController extends AbstractController
@@ -49,9 +48,9 @@ class CustomerController extends AbstractController
     /**
      * @Route("/customer/new_ticket", name="new_ticket", methods={"GET", "POST"})
      * @param Request $request
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function newTicket(Request $request): Response
+    public function newTicket(Request $request)
     {
         $message = "Create a ticket here";
 
