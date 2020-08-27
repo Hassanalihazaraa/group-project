@@ -16,8 +16,32 @@ class CustomerController extends AbstractController
      */
     public function index()
     {
+        $defaultmessage = "You have no open tickets!";
+        $repository = $this->getDoctrine()->getRepository(Ticket::class);
+        $userId = 1;
+        $tickets = $repository->findBy(
+            ['created_by' => $userId],
+            ['id' => 'ASC']
+        );
+
+
+
         return $this->render('customer/index.html.twig', [
-            'controller_name' => 'CustomerController',
+            'tickets' => $tickets,
+            'message' => $defaultmessage
+        ]);
+    }
+
+    /**
+     * @Route("/customer/ticket/{id}", name="customer-ticket-details", methods={"GET"})
+     */
+    public function ticketDetail(Ticket $ticket): \Symfony\Component\HttpFoundation\Response
+    {
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        $user = $repository->find($ticket->getCreatedBy());
+        return $this->render('customer/ticket_detail.html.twig', [
+            'ticket' => $ticket,
+            'user' => $user
         ]);
     }
 

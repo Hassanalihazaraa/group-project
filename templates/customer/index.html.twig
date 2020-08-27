@@ -9,12 +9,20 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>Hello! ✅</h1>
+    <a href="{{ path('new_ticket') }}">Create new issue</a>
 
-    This friendly message is coming from:
+
+
+    <h2>Your tickets: </h2>
+
     <ul>
-        <li>Your controller at <code><a href="{{ '/home/user/5.group-project/src/Controller/CustomerController.php'|file_link(0) }}">src/Controller/CustomerController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/user/5.group-project/templates/customer/index.html.twig'|file_link(0) }}">templates/customer/index.html.twig</a></code></li>
+        {% for ticket in tickets %}
+        <li>Created: {{ ticket.creationTime|date("m/d/Y") }} <a href="{{ path('customer-ticket-details', {id: ticket.id}) }}" title="Show details">{{ ticket.title }}</a></li>
+
+            {% else %}
+            <p>{{ message }}</p>
+        {% endfor %}
     </ul>
 </div>
 {% endblock %}
