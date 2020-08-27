@@ -44,7 +44,7 @@ class CustomerController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(User::class);
         $user = $repository->find($ticket->getCreatedBy());
         $displayCommentField = false;
-        $data = $request->get("save_comment");
+        //$data = $request->get("save_comment");
 
         if($request->get("add_comment")){
             $displayCommentField = true;
