@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CommentHistory;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\Form\NewTicketType;
@@ -33,20 +34,53 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @Route("/customer/ticket/{id}", name="customer-ticket-details", methods={"GET"})
+     * @Route("/customer/ticket/{id}", name="customer-ticket-details", methods={"GET", "POST"})
+     * @param Ticket $ticket
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function ticketDetail(Ticket $ticket): \Symfony\Component\HttpFoundation\Response
+    public function ticketDetail(Ticket $ticket, Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $repository = $this->getDoctrine()->getRepository(User::class);
         $user = $repository->find($ticket->getCreatedBy());
+        $displayCommentField = false;
+        $data = $request->get("save_comment");
+
+        if($request->get("add_comment")){
+            $displayCommentField = true;
+        }
+        if(!empty($request->get('comment'))){
+            $manager = $this->getDoctrine()->getManager();
+            $ticket->setUpdatedMessageTime(new \DateTimeImmutable());
+            $newComment = new CommentHistory();
+            $newComment
+                ->setCreatedBy($user)
+                ->setComments($request->get('comment'))
+                ->setTicket($ticket)
+                ->setIsPrivate(false) //set defaults in constructor
+                ->setFromManager(false)
+                ;
+            $manager->persist($newComment);
+            $manager->persist($ticket);
+            $manager->flush();
+        }
+        $comments = $this->getDoctrine()->getRepository(CommentHistory::class)->findBy(
+            ['ticket' => $ticket->getId()],
+            ['id' => 'DESC']
+        );
+        $lastResponse = $ticket->getUpdatedMessageTime();
         return $this->render('customer/ticket_detail.html.twig', [
             'ticket' => $ticket,
-            'user' => $user
+            'user' => $user,
+            'displayfield' => $displayCommentField,
+            'comments' => $comments,
+            'lastResponse' => $lastResponse
+
         ]);
     }
 
     /**
-     * @Route("/customer/new_ticket", name="new_ticket", methods={"GET", "POST"})
+     * @Route("/customer/new_ticket", name="new_ticket", methods={"POST"})
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -55,7 +89,7 @@ class CustomerController extends AbstractController
         $message = "Create a ticket here";
 
         $user = $this->getDoctrine()->getRepository(User::class)->find(1);
-        //$user = $repository->;
+
 
         if($request->get('new_ticket')){
             $data = $request->request->get('new_ticket');

@@ -10,10 +10,32 @@
 
     <div class="example-wrapper">
         <a href="{{ path('customer') }}">Back to Homepage</a>
-            <h5>Created: {{ ticket.creationTime|date("m/d/Y") }}</h5>
+            <h5>Created: {{ ticket.creationTime|date() }}</h5>
             <h2>Title: {{ ticket.title }}</h2>
             <p>{{ ticket.message }}</p>
         <p><i>Created by {{ user.email }}</i></p>
+        {#<form action="{{ path('customer-ticket-details', {id: ticket.id}) }}"></form>#}
+        {% if not displayfield %}
+            <form action="#">
+                <input type="submit" value="Add new comment" name="add_comment" method="POST">
+            </form>
+        {% else %}
+            <form action="#">
+                <textarea placeholder="Write down your question or issue here and we'll get back to you as soon as there is a new Belgian government" name="comment"></textarea>
+                <input type="submit" value="Add new comment" name="save_comment" method="POST">
+            </form>
+        {% endif %}
+        {#{% if message %}
 
+        {% endif %}#}
+        <br>
+        <div>
+            <h3>Reactions: {% if lastResponse %}(last reaction: {{ lastResponse|date() }}){% endif %}</h3><br>
+            {% for comment in comments %}
+            <p>{{ comment.comments }}</p>
+            {% else %}
+            <p>No reactions to be shown.</p>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
