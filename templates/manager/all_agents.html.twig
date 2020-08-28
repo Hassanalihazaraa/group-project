@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Manager!{% endblock %}
+
+{% block style %}{% endblock %}
+
+{% block body %}
+
+    <div class="example-wrapper">
+        <h1>Hello Mr Manager! ✅</h1>
+
+        <a href="{{ path('manager') }}">Back to homepage</a>
+
+        <table>
+            <tr>
+                <td>Agent Name</td>
+                <td>Agent Email</td>
+                <td>Agent Details</td>
+            </tr>
+            {% for agent in agents %}
+            <tr>
+                <td>{{ agent.firstName }} {{ agent.lastName }}</td>
+                <td>{{ agent.email }}</td>
+                <td><a href="{{ path('agent_detail') }}">Agent detail (in progress</a></td>
+            </tr>
+            {% else %}
+                <p>You don't have any agents</p>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}

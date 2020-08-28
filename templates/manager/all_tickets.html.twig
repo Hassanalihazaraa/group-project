@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Manager!{% endblock %}
+
+{% block style %}{% endblock %}
+
+{% block body %}
+
+    <div class="example-wrapper">
+        <h1>Hello Mr Manager! ✅</h1>
+
+        <a href="{{ path('manager') }}">Back to homepage</a>
+
+        <table>
+            <tr>
+                <td>Ticket title</td>
+                <td>Created</td>
+                <td>Ticket Details</td>
+            </tr>
+            {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.title }}</td>
+                    <td>{{ ticket.creationTime|date() }}</td>
+                    <td><a href="{{ path('ticket_detail') }}">Ticket detail (in progress</a></td>
+                </tr>
+            {% else %}
+                <p>No tickets to display</p>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}
