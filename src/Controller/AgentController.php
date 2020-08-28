@@ -50,6 +50,9 @@ class AgentController extends AbstractController
             $ticket->setIsEscalated(true);
             $ticket->setHandlingAgent(null);
         }
+        if($request->get('close_ticket')){
+            $ticket->setStatus('Closed');
+        }
         if(!empty($request->get('comment'))){
             $newComment = new CommentHistory();
             $newComment

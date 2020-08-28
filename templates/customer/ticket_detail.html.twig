@@ -30,6 +30,13 @@
         {% endif %}#}
         <br>
         <div>
+
+            {% if status == 'Closed' %}
+                Your ticket has been closed. <br>
+                <form action="#" method="post">
+                    <input type="submit" value="Reopen ticket" name="reopen">
+                </form>
+            {% endif %}
             <h3>Reactions: {% if lastResponse %}(last reaction: {{ lastResponse|date() }}){% endif %}</h3><br>
             {% for comment in comments %}
             <p>{{ comment.comments }}</p>
