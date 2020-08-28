@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AgentController!{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+    <a href="{{ path('agent') }}">Back to homepage</a>
+    <h2>Your tickets</h2>
+
+    <table>
+        <tr>
+            <th>Ticket title</th>
+            <th>Creation Time</th>
+            <th>Status</th>
+            <th>Check Ticket</th>
+        </tr>
+        {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.title }}</td>
+                <td>{{ ticket.creationTime|date() }}</td>
+                <td>{{ ticket.status }}</td>
+                <td><a href="{{ path('handle_escalated_ticket', {id: ticket.id}) }}">Go to escalated ticket</a></td>
+            </tr>
+
+        {% endfor %}
+    </table>
+
+
+
+
+{% endblock %}
