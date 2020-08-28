@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\CommentHistory;
 use App\Entity\Ticket;
-
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +36,6 @@ class AgentController extends AbstractController
      * @param Ticket $ticket
      * @return Response
      */
-
     public function findHandleTickets(Ticket $ticket, Request $request): Response
     {
         $repository = $this->getDoctrine()->getRepository(User::class);
@@ -94,5 +92,4 @@ class AgentController extends AbstractController
             'tickets' => $agentTickets
         ]);
     }
-
 }

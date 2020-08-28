@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\NewTicketType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CustomerController extends AbstractController
@@ -15,7 +16,7 @@ class CustomerController extends AbstractController
     /**
      * @Route("/customer", name="customer")
      */
-    public function index()
+    public function index(): Response
     {
         $defaultmessage = "You have no open tickets!";
         $repository = $this->getDoctrine()->getRepository(Ticket::class);
@@ -34,12 +35,20 @@ class CustomerController extends AbstractController
     }
 
     /**
+<<<<<<< Updated upstream
      * @Route("/customer/ticket/{id}", name="customer-ticket-details", methods={"GET", "POST"})
      * @param Ticket $ticket
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function ticketDetail(Ticket $ticket, Request $request): \Symfony\Component\HttpFoundation\Response
+=======
+     * @Route("/customer/ticket/{id}", name="customer-ticket-details", methods={"GET"})
+     * @param Ticket $ticket
+     * @return Response
+     */
+    public function ticketDetail(Ticket $ticket): Response
+>>>>>>> Stashed changes
     {
         $repository = $this->getDoctrine()->getRepository(User::class);
         $user = $repository->find($ticket->getCreatedBy());
@@ -82,9 +91,9 @@ class CustomerController extends AbstractController
     /**
      * @Route("/customer/new_ticket", name="new_ticket", methods={"GET", "POST"})
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function newTicket(Request $request)
+    public function newTicket(Request $request): Response
     {
         $message = "Create a ticket here";
 
