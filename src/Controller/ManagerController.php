@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Ticket;
 use App\Entity\User;
 use App\Form\AddAgentType;
 use Exception;
@@ -33,9 +34,7 @@ class ManagerController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('manager/index.html.twig', [
-            'controller_name' => 'ManagerController',
-        ]);
+        return $this->render('manager/manager.html.twig');
     }
 
     /**
@@ -106,6 +105,51 @@ class ManagerController extends AbstractController
         return $this->render('manager/add_agent.html.twig', [
             'add_agent_form' => $form->createView(),
             'message' => $message
+
+        ]);
+    }
+
+    /**
+     * @Route("/manager/all_agents", name="check_agents")
+     */
+    public function showAgents()
+    {
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        $agents = $repository->findBy([
+            'role' => 'Agent'
+        ]);
+        return $this->render('manager/all_agents.html.twig', [
+            'agents' => $agents
+        ]);
+    }
+    /**
+     * @Route("/manager/agent_detail", name="agent_detail")
+     */
+    public function agentDetails()
+    {
+        return $this->render('manager/index.html.twig', [
+
+        ]);
+    }
+
+    /**
+     * @Route("/manager/all_tickets", name="check_tickets")
+     */
+    public function checkTickets()
+    {
+        $repository = $this->getDoctrine()->getRepository(Ticket::class);
+        $tickets = $repository->findAll();
+        return $this->render('manager/all_tickets.html.twig', [
+            'tickets' => $tickets
+        ]);
+    }
+
+    /**
+     * @Route("/manager/ticket_detail", name="ticket_detail")
+     */
+    public function ticketDetails()
+    {
+        return $this->render('manager/index.html.twig', [
 
         ]);
     }

@@ -19,9 +19,10 @@ class SecondLineAgentController extends AbstractController
     {
 
         $repository = $this->getDoctrine()->getRepository(Ticket::class);
-        $status = 'is_escalated';
+        //$status = 'is_escalated';
         $tickets = $repository->findBy(
-            ['is_escalated' => $status],
+            //['is_escalated' => $status],
+            ['is_escalated' => true],
             ['id' => 'ASC']
         );
 
@@ -85,6 +86,8 @@ class SecondLineAgentController extends AbstractController
         $secondAgent = $this->getDoctrine()->getRepository(User::class)->find(1);
         $secondAgentTickets = $this->getDoctrine()->getRepository(Ticket::class)->findBy(
             ['handling_agent' => $secondAgent->getId()],
+            //['escalated' => true], //can be commented out once login is linked to user, now everything for user id 1
+            ['id' => 'ASC']
             ['creation_time' => 'ASC']
         );
         return $this->render('second_line_agent/personal_escalated.html.twig', [
