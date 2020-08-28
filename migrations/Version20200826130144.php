@@ -12,12 +12,12 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20200826130144 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE comment_history (id INT AUTO_INCREMENT NOT NULL, ticket_id INT NOT NULL, created_by_id INT DEFAULT NULL, comments VARCHAR(1000) NOT NULL, is_private TINYINT(1) NOT NULL, from_manager TINYINT(1) NOT NULL, INDEX IDX_D4C9125B700047D2 (ticket_id), INDEX IDX_D4C9125BB03A8386 (created_by_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -31,7 +31,7 @@ final class Version20200826130144 extends AbstractMigration
         $this->addSql('ALTER TABLE ticket ADD CONSTRAINT FK_97A0ADA31DF91F51 FOREIGN KEY (handling_agent_id) REFERENCES user (id)');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE comment_history DROP FOREIGN KEY FK_D4C9125B700047D2');
