@@ -10,59 +10,54 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
-class AgentController extends AbstractController
+class SecondLineAgentController extends AbstractController
 {
     /**
-     * @Route("/agent", name="agent")
+     * @Route("/second/line/agent", name="second_line_agent")
      */
-    public function index(): Response
+    public function index()
     {
+
         $repository = $this->getDoctrine()->getRepository(Ticket::class);
-        $status = 'open';
+        $status = 'is_escalated';
         $tickets = $repository->findBy(
-            ['status' => $status],
+            ['is_escalated' => $status],
             ['id' => 'ASC']
         );
 
-
-        return $this->render('agent/index.html.twig', [
+        return $this->render('second_line_agent/index.html.twig', [
             'tickets' => $tickets
         ]);
     }
 
     /**
-     * @Route("/agent/ticket/{id}", name="handle", methods={"GET", "POST"})
+     * @Route("/second/line/agent/ticket/{id}", name="handle_escalated_ticket", methods={"GET", "POST"})
      * @param Ticket $ticket
-     * @param Request $request
      * @return Response
      */
-    public function findHandleTickets(Ticket $ticket, Request $request): Response
+    public function hand_escalated_tickets(Ticket $ticket, Request $request) : response
     {
         $repository = $this->getDoctrine()->getRepository(User::class);
         $manager = $this->getDoctrine()->getManager();
         $user = $repository->find($ticket->getCreatedBy());
-        $agent = $repository->find(1); // change with id of agent that's logged in
+        $secondAgent = $repository->find(1); // change with id of second agent that's logged in
         $ticket->setStatus('In progress');
-        $ticket->setHandlingAgent($agent);
+        $ticket->setHandlingAgent($secondAgent);
 
         if($request->get('escalate')){
             $ticket->setIsEscalated(true);
             $ticket->setHandlingAgent(null);
         }
-        if($request->get('close_ticket')){
-            $ticket->setStatus('Closed');
-        }
         if(!empty($request->get('comment'))){
-            $newComment = new CommentHistory();
-            $newComment
+            $escalatedComment = new CommentHistory();
+            $escalatedComment
                 ->setFromManager(false)
                 ->setIsPrivate(false)
                 ->setTicket($ticket)
-                ->setCreatedBy($agent)
+                ->setCreatedBy($secondAgent)
                 ->setComments($request->get('comment'))
-                ;
-            $this->getDoctrine()->getManager()->persist($newComment);
+            ;
+            $this->getDoctrine()->getManager()->persist($escalatedComment);
             $this->getDoctrine()->getManager()->flush();
         }
 
@@ -74,7 +69,7 @@ class AgentController extends AbstractController
             ['id' => 'DESC']
         );
 
-        return $this->render('agent/handle.html.twig', [
+        return $this->render('second_line_agent/handle_escalated.html.twig', [
             'ticket' => $ticket,
             'user' => $user,
             'comments' => $comments
@@ -82,18 +77,20 @@ class AgentController extends AbstractController
     }
 
     /**
-     * @Route("/agent/personal_tickets", name="personal_tickets", methods={"GET"})
+     * @Route("/agent/personal_escalated_tickets", name="personal_escalated_tickets", methods={"GET", "POST"})
      * @return Response
      */
-    public function showAgentTickets(): Response
+    public function showAgentTickets()
     {
-        $agent = $this->getDoctrine()->getRepository(User::class)->find(1);
-        $agentTickets = $this->getDoctrine()->getRepository(Ticket::class)->findBy(
-            ['handling_agent' => $agent->getId()],
+        $secondAgent = $this->getDoctrine()->getRepository(User::class)->find(1);
+        $secondAgentTickets = $this->getDoctrine()->getRepository(Ticket::class)->findBy(
+            ['handling_agent' => $secondAgent->getId()],
             ['id' => 'ASC']
         );
         return $this->render('agent/personaltickets.html.twig', [
-            'tickets' => $agentTickets
+            'tickets' => $secondAgentTickets
         ]);
     }
+
+
 }
