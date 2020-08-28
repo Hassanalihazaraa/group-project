@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\CommentHistory;
 use App\Entity\Ticket;
-
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +16,7 @@ class AgentController extends AbstractController
     /**
      * @Route("/agent", name="agent")
      */
-    public function index()
+    public function index(): Response
     {
         $repository = $this->getDoctrine()->getRepository(Ticket::class);
         $status = 'open';
@@ -35,9 +34,9 @@ class AgentController extends AbstractController
     /**
      * @Route("/agent/ticket/{id}", name="handle", methods={"GET", "POST"})
      * @param Ticket $ticket
+     * @param Request $request
      * @return Response
      */
-
     public function findHandleTickets(Ticket $ticket, Request $request): Response
     {
         $repository = $this->getDoctrine()->getRepository(User::class);
@@ -50,6 +49,9 @@ class AgentController extends AbstractController
         if($request->get('escalate')){
             $ticket->setIsEscalated(true);
             $ticket->setHandlingAgent(null);
+        }
+        if($request->get('close_ticket')){
+            $ticket->setStatus('Closed');
         }
         if(!empty($request->get('comment'))){
             $newComment = new CommentHistory();
@@ -83,7 +85,7 @@ class AgentController extends AbstractController
      * @Route("/agent/personal_tickets", name="personal_tickets", methods={"GET"})
      * @return Response
      */
-    public function showAgentTickets()
+    public function showAgentTickets(): Response
     {
         $agent = $this->getDoctrine()->getRepository(User::class)->find(1);
         $agentTickets = $this->getDoctrine()->getRepository(Ticket::class)->findBy(
@@ -94,5 +96,4 @@ class AgentController extends AbstractController
             'tickets' => $agentTickets
         ]);
     }
-
 }
