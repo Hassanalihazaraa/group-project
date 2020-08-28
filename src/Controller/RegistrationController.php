@@ -37,6 +37,7 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
+            $user->setRole('Customer');
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
@@ -58,7 +59,7 @@ class RegistrationController extends AbstractController
             );
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('_profiler_home');
+            return $this->redirectToRoute('customer');
         }
 
         return $this->render('registration/register.html.twig', [
