@@ -80,7 +80,7 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @Route("/customer/new_ticket", name="new_ticket", methods={"POST"})
+     * @Route("/customer/new_ticket", name="new_ticket", methods={"GET", "POST"})
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
