@@ -27,7 +27,6 @@ class CustomerController extends AbstractController
         );
 
 
-
         return $this->render('customer/index.html.twig', [
             'tickets' => $tickets,
             'message' => $defaultmessage
@@ -35,30 +34,22 @@ class CustomerController extends AbstractController
     }
 
     /**
-<<<<<<< Updated upstream
      * @Route("/customer/ticket/{id}", name="customer-ticket-details", methods={"GET", "POST"})
      * @param Ticket $ticket
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function ticketDetail(Ticket $ticket, Request $request): \Symfony\Component\HttpFoundation\Response
-=======
-     * @Route("/customer/ticket/{id}", name="customer-ticket-details", methods={"GET"})
-     * @param Ticket $ticket
      * @return Response
      */
-    public function ticketDetail(Ticket $ticket): Response
->>>>>>> Stashed changes
+    public function ticketDetail(Ticket $ticket, Request $request): Response
     {
         $repository = $this->getDoctrine()->getRepository(User::class);
         $user = $repository->find($ticket->getCreatedBy());
         $displayCommentField = false;
         //$data = $request->get("save_comment");
 
-        if($request->get("add_comment")){
+        if ($request->get("add_comment")) {
             $displayCommentField = true;
         }
-        if(!empty($request->get('comment'))){
+        if (!empty($request->get('comment'))) {
             $manager = $this->getDoctrine()->getManager();
             $ticket->setUpdatedMessageTime(new \DateTimeImmutable());
             $newComment = new CommentHistory();
@@ -67,8 +58,7 @@ class CustomerController extends AbstractController
                 ->setComments($request->get('comment'))
                 ->setTicket($ticket)
                 ->setIsPrivate(false) //set defaults in constructor
-                ->setFromManager(false)
-                ;
+                ->setFromManager(false);
             $manager->persist($newComment);
             $manager->persist($ticket);
             $manager->flush();
@@ -100,7 +90,7 @@ class CustomerController extends AbstractController
         $user = $this->getDoctrine()->getRepository(User::class)->find(1);
 
 
-        if($request->get('new_ticket')){
+        if ($request->get('new_ticket')) {
             $data = $request->request->get('new_ticket');
             //$createdBy = $data['created_by'];
             $title = $data['title'];
@@ -119,8 +109,6 @@ class CustomerController extends AbstractController
             $manager->persist($ticket);
             $manager->flush();
         }
-
-
 
 
         $ticket = new Ticket();
