@@ -44,10 +44,15 @@ class CustomerController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(User::class);
         $user = $repository->find($ticket->getCreatedBy());
         $displayCommentField = false;
+        $status = $ticket->getStatus();
         //$data = $request->get("save_comment");
 
         if($request->get("add_comment")){
             $displayCommentField = true;
+        }
+        if($request->get('reopen') && $status === 'Closed'){
+            $ticket->setStatus('Open');
+            $ticket->setUpdatedMessageTime(new \DateTimeImmutable());
         }
         if(!empty($request->get('comment'))){
             $manager = $this->getDoctrine()->getManager();
@@ -69,12 +74,14 @@ class CustomerController extends AbstractController
             ['id' => 'DESC']
         );
         $lastResponse = $ticket->getUpdatedMessageTime();
+        $status = $ticket->getStatus();
         return $this->render('customer/ticket_detail.html.twig', [
             'ticket' => $ticket,
             'user' => $user,
             'displayfield' => $displayCommentField,
             'comments' => $comments,
-            'lastResponse' => $lastResponse
+            'lastResponse' => $lastResponse,
+            'status' => $status
 
         ]);
     }
