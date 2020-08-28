@@ -77,17 +77,17 @@ class SecondLineAgentController extends AbstractController
     }
 
     /**
-     * @Route("/agent/personal_escalated_tickets", name="personal_escalated_tickets", methods={"GET", "POST"})
+     * @Route("/second/line/agent/personal_escalated_tickets", name="personal_escalated_tickets", methods={"GET", "POST"})
      * @return Response
      */
-    public function showAgentTickets()
+    public function showSecondAgentTickets()
     {
         $secondAgent = $this->getDoctrine()->getRepository(User::class)->find(1);
         $secondAgentTickets = $this->getDoctrine()->getRepository(Ticket::class)->findBy(
             ['handling_agent' => $secondAgent->getId()],
-            ['id' => 'ASC']
+            ['creation_time' => 'ASC']
         );
-        return $this->render('agent/personaltickets.html.twig', [
+        return $this->render('second_line_agent/personal_escalated.html.twig', [
             'tickets' => $secondAgentTickets
         ]);
     }
