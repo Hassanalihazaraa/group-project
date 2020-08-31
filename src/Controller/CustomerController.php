@@ -51,7 +51,7 @@ class CustomerController extends AbstractController
             $displayCommentField = true;
         }
 
-        if($request->get('reopen') && $status == 'Closed'){
+        if($request->get('reopen') && $status === 'Closed'){
             $ticket->setStatus('open');
             $ticket->setUpdatedMessageTime(new \DateTimeImmutable());
         }

@@ -64,7 +64,7 @@ class ManagerController extends AbstractController
                 ->setLastName($lastName)
                 ->setEmail($email)
                 ->setPassword($random)
-                ->setRole('Agent');
+                ->setRole('ROLE_AGENT');
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($agent);
             $manager->flush();
@@ -112,11 +112,11 @@ class ManagerController extends AbstractController
     /**
      * @Route("/manager/all_agents", name="check_agents")
      */
-    public function showAgents()
+    public function showAgents(): Response
     {
         $repository = $this->getDoctrine()->getRepository(User::class);
         $agents = $repository->findBy([
-            'role' => 'Agent'
+            'roles' => 'ROLE_AGENT'
         ]);
         return $this->render('manager/all_agents.html.twig', [
             'agents' => $agents
@@ -125,7 +125,7 @@ class ManagerController extends AbstractController
     /**
      * @Route("/manager/agent_detail", name="agent_detail")
      */
-    public function agentDetails()
+    public function agentDetails(): Response
     {
         return $this->render('manager/index.html.twig', [
 
@@ -135,7 +135,7 @@ class ManagerController extends AbstractController
     /**
      * @Route("/manager/all_tickets", name="check_tickets")
      */
-    public function checkTickets()
+    public function checkTickets(): Response
     {
         $repository = $this->getDoctrine()->getRepository(Ticket::class);
         $tickets = $repository->findAll();
@@ -147,7 +147,7 @@ class ManagerController extends AbstractController
     /**
      * @Route("/manager/ticket_detail", name="ticket_detail")
      */
-    public function ticketDetails()
+    public function ticketDetails(): Response
     {
         return $this->render('manager/index.html.twig', [
 
